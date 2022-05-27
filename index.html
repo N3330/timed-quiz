@@ -7,6 +7,7 @@
     <title>Code Timed Quiz</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<h2 id="countdown"></h2>
 <body>
     <section id="start"> 
         <h2>Start Quiz</h2>
@@ -14,16 +15,20 @@
     </section>
     <section id="quiz" class="hide">
         <h2 id="title">Questions</h2>
-        <div id="answers">
+        <div id="answers" class="btn-group">
 
         </div>
     </section>
-    <section id="end">
+    <section id="end" class="hide">
         <h2>Enter your Initials</h2>
         <input type="text" />
-        <button type="submit"></button>
+        <button id="end-btn" type="submit"></button>
     </section>
-    
+    <section id="highscores" class="hide"> 
+        <h2>Previous highscores</h2>
+
+    </section>
+
     <script src="script.js"></script>
 </body>
 </html>
