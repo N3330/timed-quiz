@@ -7,12 +7,15 @@ var timeLeft = 60;
 var state = 'start';
 var start = document.querySelector('#start');
 var quiz = document.querySelector('#quiz');
+var timer;
+var showQuestions;
+var answer;
 
 var questions = [
     {
         text: "What is the first language you learn in UNCC Bootcamp",
         choices: ["HTML", "CSS", "Python", "JavaScript"],
-        answer: "JavaScript"
+        answer: "HTML"
     }, {
         text: "When was JavaScript released?",
         choices: ["2005", "1987", "1995", "2011",],
@@ -28,17 +31,21 @@ var questions = [
     }
 ];
 
+function scoreSaver() {
+
+}
+
 function switchState() {
     if (state === "quiz") {
         endQuiz.style.display = "none";
         start.style.display = "none";
         quiz.style.display = "block";
-    } 
+    }
     if (state === "start") {
         start.style.display = "block";
         endQuiz.style.display = "none";
         quiz.style.display = "none";
-        
+
     }
     if (state === "highscores") {
         start.style.display = "none";
@@ -48,37 +55,49 @@ function switchState() {
 }
 
 function countdown() {
-    
-    var timer = setInterval(function () {
+
+     timer = setInterval(function () {
         timeLeft--;
         timerEl.textContent = timeLeft + ' seconds remaining.';
-        
-        if(timeLeft === 0) {
+
+        if (timeLeft === 0) {
             clearInterval(timer);
             endGame();
         }
-        
-    },1000);
+
+    }, 1000);
 }
 
 function endGame() {
     showQuestions.textContent = "Finished!";
-    timeLeft = 0;
-    answer.textContent = ""
-    
-    
+    // timeLeft = 0;
+    timerEl.textContent = "";
+    //answer.textContent = ""
+    // create input and button finishe
+
+
 }
 
+// function displayHighScores() {
+//     var items = JSON.parse(localStorage.getItem("highscores")) || [];
+//     for (var i = 0; i < items.length; i++) {
+//         var dlEl = document.createElement('dl');
+//         var dtEl = document.createElement('dt');
+//         var ddEl = document.createElement('dd');
+//         dlEl.appendChild(dtEl);
+//         dlEl.appendChild(ddEl);
+//         dtEl.textContent = items[i].initials;
+//         ddEl.textContent = items[i].score;
+//         document.getElementById('highscores').appendChild(dlEl);
+//     }
+// }
+// time left and initials values inside function
+// build object where the keys are the same initials on the left score on the right 
+// console.log time left and initials values inside function 
+//initials = button triggered by user  
 
 function buildQuiz() {
-    if (index === questions.length) {
-        console.log('endGame');
-        
-        return;
-        
-    }
-    countdown();
-    var showQuestions = document.querySelector('#title');
+    showQuestions = document.querySelector('#title');
     showQuestions.textContent = questions[index].text;
     var answerBox = document.querySelector('#answers');
     console.log(answerBox);
@@ -92,17 +111,28 @@ function buildQuiz() {
             console.log(selectedAnswer);
             if (selectedAnswer == questions[index].answer) {
                 answerBox.textContent = "Correct answer!";
-                index++
-                buildQuiz();
-            } else  { answerBox.textContent = "Wrong answer!";
-            timeLeft -= 10; 
-            console.log(timeLeft);
+                
+            }
+            else { 
+                answerBox.textContent = "Wrong answer!"; 
+                timeLeft -= 10; 
+            }
+            // console.log(timeLeft);
             index++
-            buildQuiz();
+            setTimeout(function () {
+                answerBox.textContent = "";
+            }, 750);
+            if (index === questions.length) {
+                clearInterval(timer);
+                endGame();
+            } else {
+                setTimeout(buildQuiz, 750);
+                
+            }
         }
-    }
-    answerBox.appendChild(button);
-})
+        answerBox.appendChild(button);
+    })
+}
 //load the questions
 //append answer buttons 
 //add a click to the answer buttons 
@@ -113,9 +143,9 @@ function buildQuiz() {
 // high scores to local storage 
 //timer displayed on the page 
 //subtract time for wrong answers
-}
 
-function init(){
+
+function init() {
     switchState();
 }
 
@@ -125,6 +155,7 @@ init();
 startQuiz.addEventListener('click', function () {
     state = 'quiz';
     switchState();
+    countdown();
     buildQuiz();
     
 });
