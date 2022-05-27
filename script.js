@@ -1,13 +1,13 @@
 var startQuiz = document.querySelector('#start-btn');
 var timerEl = document.querySelector('#countdown');
+var endQuiz = document.querySelector('#end');
+var highScore = document.querySelector('#highscores');
 var index = 0
 var timeLeft = 60;
-startQuiz.addEventListener('click', function () {
-    document.querySelector('#start').setAttribute("class", "hide");
-    document.querySelector('#quiz').removeAttribute("class");
-    buildQuiz();
-    
-});
+var state = 'start';
+var start = document.querySelector('#start');
+var quiz = document.querySelector('#quiz');
+
 var questions = [
     {
         text: "What is the first language you learn in UNCC Bootcamp",
@@ -28,36 +28,54 @@ var questions = [
     }
 ];
 
+function switchState() {
+    if (state === "quiz") {
+        endQuiz.style.display = "none";
+        start.style.display = "none";
+        quiz.style.display = "block";
+    } 
+    if (state === "start") {
+        start.style.display = "block";
+        endQuiz.style.display = "none";
+        quiz.style.display = "none";
+        
+    }
+    if (state === "highscores") {
+        start.style.display = "none";
+        endQuiz.style.display = "none";
+        highScore.style.display = "block";
+    }
+}
 
 function countdown() {
-  
+    
     var timer = setInterval(function () {
-      timeLeft--;
-      timerEl.textContent = timeLeft + ' seconds remaining.';
-  
-      if(timeLeft === 0) {
-        clearInterval(timer);
-        endGame();
-      }
-      
+        timeLeft--;
+        timerEl.textContent = timeLeft + ' seconds remaining.';
+        
+        if(timeLeft === 0) {
+            clearInterval(timer);
+            endGame();
+        }
+        
     },1000);
-  }
+}
 
 function endGame() {
     showQuestions.textContent = "Finished!";
     timeLeft = 0;
     answer.textContent = ""
-
-
+    
+    
 }
 
 
 function buildQuiz() {
     if (index === questions.length) {
         console.log('endGame');
-
+        
         return;
-
+        
     }
     countdown();
     var showQuestions = document.querySelector('#title');
@@ -82,17 +100,31 @@ function buildQuiz() {
             index++
             buildQuiz();
         }
-        }
-        answerBox.appendChild(button);
-    })
-    //load the questions
-    //append answer buttons 
-    //add a click to the answer buttons 
-    //when clicked find out if right or wrong 
-    //reload function 
-    // create timer
-    // time left turned into score 
-    // high scores to local storage 
-    //timer displayed on the page 
-    //subtract time for wrong answers
+    }
+    answerBox.appendChild(button);
+})
+//load the questions
+//append answer buttons 
+//add a click to the answer buttons 
+//when clicked find out if right or wrong 
+//reload function 
+// create timer
+// time left turned into score 
+// high scores to local storage 
+//timer displayed on the page 
+//subtract time for wrong answers
 }
+
+function init(){
+    switchState();
+}
+
+init();
+
+
+startQuiz.addEventListener('click', function () {
+    state = 'quiz';
+    switchState();
+    buildQuiz();
+    
+});
