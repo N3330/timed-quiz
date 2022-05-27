@@ -10,29 +10,21 @@ startQuiz.addEventListener('click', function () {
 });
 var questions = [
     {
-        text: "Question 1",
-        choices: ["A", "B", "C", "D", "E", "F"],
-        answer: "A"
+        text: "What is the first language you learn in UNCC Bootcamp",
+        choices: ["HTML", "CSS", "Python", "JavaScript"],
+        answer: "JavaScript"
     }, {
-        text: "Question 2",
-        choices: ["A", "B", "C", "D", "E", "F"],
-        answer: "A"
+        text: "When was JavaScript released?",
+        choices: ["2005", "1987", "1995", "2011",],
+        answer: "1995"
     }, {
-        text: "Question 3",
-        choices: ["A", "B", "C", "D", "E", "F"],
-        answer: "A"
+        text: "What is the keyword for varialble",
+        choices: ["var", "const", "let", "All of the above",],
+        answer: "All of the above"
     }, {
-        text: "Question 4",
-        choices: ["A", "B", "C", "D", "E", "F"],
-        answer: "A"
-    }, {
-        text: "Question 5",
-        choices: ["A", "B", "C", "D", "E", "F"],
-        answer: "A"
-    }, {
-        text: "Question 6",
-        choices: ["A", "B", "C", "D", "E", "F"],
-        answer: "A"
+        text: "What does API stand for?",
+        choices: ["Application programming interface", "all program internet", "Apple Products inc", "All of the above"],
+        answer: "Application programming interface"
     }
 ];
 
