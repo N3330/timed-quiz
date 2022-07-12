@@ -7,10 +7,11 @@ var timeLeft = 60;
 var state = 'start';
 var start = document.querySelector('#start');
 var quiz = document.querySelector('#quiz');
+var end = document.querySelector('#end');
 var timer;
 var showQuestions;
 var answer;
-
+var highScoresArray = JSON.parse(localStorage.getItem("highscores")) || [];
 var questions = [
     {
         text: "What is the first language you learn in UNCC Bootcamp",
@@ -31,66 +32,82 @@ var questions = [
     }
 ];
 
-function scoreSaver() {
+// function scoreSaver() {
+    
+// }
 
-}
-
-function switchState() {
-    if (state === "quiz") {
-        endQuiz.style.display = "none";
-        start.style.display = "none";
-        quiz.style.display = "block";
+// function switchState() {
+//     if (state === "quiz") {
+//         // endQuiz.style.display = "none";
+//         start.style.display = "none";
+//         quiz.style.display = "block";
+//     }
+//     if (state === "start") {
+//         start.style.display = "block";
+//         // endQuiz.style.display = "none";
+//         quiz.style.display = "none";
+        
+//     }
+//     if (state === "highscores") {
+//             start.style.display = "none";
+//             endQuiz.style.display = "none";
+//             highScore.style.display = "block";
+//             end.classList.remove("hide");
+//         }
+//     }
+    
+    function countdown() {
+        
+        timer = setInterval(function () {
+            timeLeft--;
+            timerEl.textContent = timeLeft + ' seconds remaining.';
+            
+            if (timeLeft === 0) {
+                clearInterval(timer);
+                endGame();
+            }
+            
+        }, 1000);
     }
-    if (state === "start") {
-        start.style.display = "block";
-        endQuiz.style.display = "none";
-        quiz.style.display = "none";
+    
+    function endGame() {
+        end.classList.remove("hide")
+        quiz.classList.add("hide")
+        timerEl.textContent = "";
+        var submit = document.querySelector("#end-btn")
+        submit.onclick = function () {
+            var score = {time: timeLeft, initials: document.getElementById("initials").value}
+            highScoresArray.push(score)
+            localStorage.setItem("highscores", JSON.stringify(highScoresArray))
+            displayHighScores()
 
-    }
-    if (state === "highscores") {
-        start.style.display = "none";
-        endQuiz.style.display = "none";
-        highScore.style.display = "block";
-    }
-}
-
-function countdown() {
-
-     timer = setInterval(function () {
-        timeLeft--;
-        timerEl.textContent = timeLeft + ' seconds remaining.';
-
-        if (timeLeft === 0) {
-            clearInterval(timer);
-            endGame();
         }
+        // console.log(localStorage);
+        // showQuestions.appendChild(initialsEl);
+    
+    
 
-    }, 1000);
-}
-
-function endGame() {
-    showQuestions.textContent = "Finished!";
-    // timeLeft = 0;
-    timerEl.textContent = "";
     //answer.textContent = ""
     // create input and button finishe
 
 
 }
 
-// function displayHighScores() {
-//     var items = JSON.parse(localStorage.getItem("highscores")) || [];
-//     for (var i = 0; i < items.length; i++) {
-//         var dlEl = document.createElement('dl');
-//         var dtEl = document.createElement('dt');
-//         var ddEl = document.createElement('dd');
-//         dlEl.appendChild(dtEl);
-//         dlEl.appendChild(ddEl);
-//         dtEl.textContent = items[i].initials;
-//         ddEl.textContent = items[i].score;
-//         document.getElementById('highscores').appendChild(dlEl);
-//     }
-// }
+function displayHighScores() {
+    end.classList.add("hide")
+    highscores.classList.remove("hide")
+    var items = JSON.parse(localStorage.getItem("highscores")) || [];
+    for (var i = 0; i < items.length; i++) {
+        var dlEl = document.createElement('dl');
+        var dtEl = document.createElement('dt');
+        var ddEl = document.createElement('dd');
+        dlEl.appendChild(dtEl);
+        dlEl.appendChild(ddEl);
+        dtEl.textContent = items[i].initials;
+        ddEl.textContent = items[i].score;
+        document.getElementById('highscores').appendChild(dlEl);
+    }
+}
 // time left and initials values inside function
 // build object where the keys are the same initials on the left score on the right 
 // console.log time left and initials values inside function 
@@ -145,17 +162,19 @@ function buildQuiz() {
 //subtract time for wrong answers
 
 
-function init() {
-    switchState();
-}
-
-init();
 
 
+// submit.addEventListener("click", function(event) {
+//     event.preventDefault();
+//     state = "highscores";
+
+// })
 startQuiz.addEventListener('click', function () {
-    state = 'quiz';
-    switchState();
+    quiz.classList.remove("hide")
+    start.classList.add("hide")
     countdown();
     buildQuiz();
     
 });
+
+// do a sort over highscores array and display them on the page.
