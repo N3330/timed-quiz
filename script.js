@@ -8,6 +8,7 @@ var state = 'start';
 var start = document.querySelector('#start');
 var quiz = document.querySelector('#quiz');
 var end = document.querySelector('#end');
+var restart = document.querySelector('#restart');
 var timer;
 var showQuestions;
 var answer;
@@ -32,29 +33,6 @@ var questions = [
     }
 ];
 
-// function scoreSaver() {
-    
-// }
-
-// function switchState() {
-//     if (state === "quiz") {
-//         // endQuiz.style.display = "none";
-//         start.style.display = "none";
-//         quiz.style.display = "block";
-//     }
-//     if (state === "start") {
-//         start.style.display = "block";
-//         // endQuiz.style.display = "none";
-//         quiz.style.display = "none";
-        
-//     }
-//     if (state === "highscores") {
-//             start.style.display = "none";
-//             endQuiz.style.display = "none";
-//             highScore.style.display = "block";
-//             end.classList.remove("hide");
-//         }
-//     }
     
     function countdown() {
         
@@ -79,39 +57,33 @@ var questions = [
             var score = {time: timeLeft, initials: document.getElementById("initials").value}
             highScoresArray.push(score)
             localStorage.setItem("highscores", JSON.stringify(highScoresArray))
-            displayHighScores()
-
+            // displayHighScores()
+            end.classList.add("hide")
+        highScore.classList.remove("hide")
+        restart.classList.remove("hide")
+        var items = JSON.parse(localStorage.getItem("highscores")) || [];
+        for (var i = 0; i < items.length; i++) {
+            var dlEl = document.createElement('dl');
+            var dtEl = document.createElement('dt');
+            var ddEl = document.createElement('dd');
+            dlEl.appendChild(dtEl);
+            dlEl.appendChild(ddEl);
+            dlEl.style.display = "inline"
+            dtEl.textContent = items[i].initials;
+            ddEl.textContent = items[i].time;
+            document.getElementById('highscores').appendChild(dlEl);
         }
-        // console.log(localStorage);
-        // showQuestions.appendChild(initialsEl);
-    
-    
-
-    //answer.textContent = ""
-    // create input and button finishe
-
-
-}
-
-function displayHighScores() {
-    end.classList.add("hide")
-    highscores.classList.remove("hide")
-    var items = JSON.parse(localStorage.getItem("highscores")) || [];
-    for (var i = 0; i < items.length; i++) {
-        var dlEl = document.createElement('dl');
-        var dtEl = document.createElement('dt');
-        var ddEl = document.createElement('dd');
-        dlEl.appendChild(dtEl);
-        dlEl.appendChild(ddEl);
-        dtEl.textContent = items[i].initials;
-        ddEl.textContent = items[i].score;
-        document.getElementById('highscores').appendChild(dlEl);
+        restart.addEventListener('click', function () {
+            location.reload()
+            console.log('clicked me')
+        } )
+        
     }
+    
+    
+    
 }
-// time left and initials values inside function
-// build object where the keys are the same initials on the left score on the right 
-// console.log time left and initials values inside function 
-//initials = button triggered by user  
+
 
 function buildQuiz() {
     showQuestions = document.querySelector('#title');
